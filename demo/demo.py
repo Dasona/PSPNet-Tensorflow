@@ -14,11 +14,32 @@ import tornado
 import tornado.httpserver as httpserver
 import tornado.web as web
 import urllib
+import matplotlib
+matplotlib.use('agg')
+import matplotlib.pyplot as plt
+from matplotlib import colors as mpl_colors
 
 from PIL import Image
 
 
 app = None # pylint: disable=invalid-name
+
+FLAGS = tf.app.flags.FLAGS
+
+_R_MEAN = 123.68
+_G_MEAN = 116.78
+_B_MEAN = 103.94
+
+
+
+palette = [(0.0, 0.0, 0.0), (0.5, 0.0, 0.0), (0.0, 0.5, 0.0), (0.5, 0.5, 0.0),
+           (0.0, 0.0, 0.5), (0.5, 0.0, 0.5), (0.0, 0.5, 0.5), (0.5, 0.5, 0.5),
+           (0.25, 0.0, 0.0), (0.75, 0.0, 0.0), (0.25, 0.5, 0.0), (0.75, 0.5, 0.0),
+           (0.25, 0.0, 0.5), (0.75, 0.0, 0.5), (0.25, 0.5, 0.5), (0.75, 0.5, 0.5),
+           (0.0, 0.25, 0.0), (0.5, 0.25, 0.0), (0.0, 0.75, 0.0), (0.5, 0.75, 0.0),
+           (0.0, 0.25, 0.5)]
+
+my_cmap = mpl_colors.LinearSegmentedColormap.from_list('Custom cmap', palette, 21)
 
 
 try:
@@ -96,17 +117,13 @@ class TestUIHandler(web.RequestHandler):
     label = self._app.predict(resized_image)
 
     label = misc.imresize(label, (H, W), interp='nearest')
-    label = label != 0
-    sky_mask = label == True
-    etc_mask = label == False
-
-    sky = image * sky_mask[:, :, np.newaxis]
-    etc = image * etc_mask[:, :, np.newaxis]
-
-    result = np.vstack((image, sky, etc))
-
+    fig = plt.figure()
+    ax = fig.add_subplot('121')
+    ax.imshow(image)
+    ax = fig.add_subplot('122')
+    ax.matshow(label, vmin=0, vmax=21, cmap=my_cmap)
     output = StringIO()
-    misc.imsave(output, result, 'JPEG')
+    plt.savefig(output)
     self.write(output.getvalue())
     self.set_header('Content-type', 'JPG')
 
