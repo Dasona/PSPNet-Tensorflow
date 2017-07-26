@@ -3,9 +3,9 @@ Tensorflow Semantic Segmentation Workbench for RGBD/RGB Images. Algorithm implem
 
 Important information regarding the scripts and their parameters is available from this repo's [Wiki](https://github.com/amanjhunjhunwala/PSPNet-Tensorflow/wiki/Description-of-scripts-and-parameters)
 
-Requirements: tensorflow-gpu-0.12rc1 (The repo is not comptible with Tensorflow 1.+) and a properly set Anaconda python installation !
+`Requirements: tensorflow-gpu-0.12rc1 (The repo is not comptible with Tensorflow 1.+) and a properly set Anaconda python installation `
 
-Workflow of this repository using ADE20K dataset (other datasets are similar) :
+### Workflow of this repository using ADE20K dataset (other datasets are similar) :
 
 1. First download the dataset and extract the contents into the training set directory and validation directory as mentioned in the Wiki !
 
