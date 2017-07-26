@@ -14,6 +14,7 @@ Workflow of this repository using ADE20K dataset (other datasets are similar) :
 4. Check to see if records are generated in the directory
 
 5.0 Download the converted weights for intialization from [here](http://bit.do/PSP-TF-Initialization) 
+
 Make sure to add the path to this directory as the checkpoint path ! 
 
 5.1 Run the training.sh script after setting the flags to relevant values
